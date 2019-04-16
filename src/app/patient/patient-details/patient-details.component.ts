@@ -10,9 +10,6 @@ import { PatientComponent } from '../patient.component';
   styleUrls: ['./patient-details.component.css']
 })
 export class PatientDetailsComponent implements OnInit {
-
-  isPopupOpen = true;
-
   constructor( public service:PatientDetailService,
                private dialogBox:MatDialogRef<PatientComponent>,
                @Inject(MAT_DIALOG_DATA) public data : any ) { }
@@ -20,16 +17,23 @@ export class PatientDetailsComponent implements OnInit {
   ngOnInit() {
   }
 
+  // Resets the form
   resetForm(form:NgForm){
     form.reset();
+
+    // Sets the formData Id to 0 and then 
+    // refreshes the list
     this.service.formData.Id = 0;
     this.service.fetchPatients();
   }
 
   onSubmit(form:NgForm){
 
+    // Checking if any of the form inputs are invalid
     if(this.service.formData.FirstName && this.service.formData.LastName && this.service.formData.BirthDate)
     {
+
+      // Checking if it is an update or addition of a new record
       if(this.service.formData.Id == 0)
         this.service.addPatient(this.service.formData)
                   .subscribe(res=>{this.resetForm(form);}, err=>{console.log();});
@@ -44,6 +48,7 @@ export class PatientDetailsComponent implements OnInit {
     this.closeDialog();
   }
 
+  // Closed the dialog box
   closeDialog(){
     this.dialogBox.close();
     this.service.formData.Id = 0;

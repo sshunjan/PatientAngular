@@ -24,6 +24,9 @@ export class PatientDetailsListComponent implements OnInit {
   //Populates the form for an update
   populateForm(pd : PatientDetail){
     this.patientDetails.openDialog();
+
+    // Copying the data object so that the changes
+    // to update the object won't be shown in the list at runtime
     this.service.formData = Object.assign({},pd);
   }
 
@@ -35,6 +38,8 @@ export class PatientDetailsListComponent implements OnInit {
 
   // Search function 
   search(){
+
+    // When the input is empty, refresh the list
     if(this.searchInput != "")
       this.service.list = this.service.list.filter(result => {return result.FirstName.toLocaleLowerCase().match(this.searchInput.toLocaleLowerCase())});
     else
